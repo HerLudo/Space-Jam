@@ -1,0 +1,261 @@
+/* GENERAL */
+*{
+    border:none;
+    text-decoration: none;
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+}
+@font-face {
+    font-family: 'moonhouseregular';
+    src: url('font/moonhouse-webfont.woff2') format('woff2'),
+         url('font/moonhouse-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+     
+}
+
+@font-face {
+    font-family: 'stardos_stencilregular';
+    src: url('font/stardosstencil-regular-webfont.woff2') format('woff2'),
+         url('font/stardosstencil-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+h1 {
+    color: white;
+    text-align:center;
+    font-family: moonhouseregular;
+    font-weight: normal;
+    font-size: 2.5vw;
+    text-transform: uppercase;  
+}
+h2 {
+    color: white;
+    text-align: center;
+    font-family: moonhouseregular;
+    font-weight: normal;
+    font-size: 2vw;
+    text-transform: uppercase;
+    width: 100%; 
+    margin-top: 2rem;  
+}
+h3 {
+    color:white;
+    font-family: moonhouseregular;
+    font-size: 2vw;
+}
+p
+{
+    color: white;
+    font-family: stardos_stencilregular;
+    font-size: 1.3rem;
+}
+/* END GENERAL */
+
+/* --- BODY --- */
+body
+{
+    background:black;
+    margin: 0 auto;
+    border: none; 
+}
+#index_main
+{
+    display: block;
+    margin: 0 auto;
+}
+/* --- END BODY --- */
+
+/* --- BEGIN FOOTER --- */
+footer {
+    margin:0 auto;
+    background: black;
+}
+
+/* --- END FOOTER ---*/
+
+/* --- BEGIN HEADER --- */
+header
+{
+    width:100%;
+    background: url('pictures/solar-system-.gif') no-repeat center/100%;
+    margin: 0 auto;
+    height: 33vh;  
+    display: flex;
+    align-items:flex-end;
+    justify-content: center;
+    /* z-index: 10; */
+}       
+#home
+{
+    background-color: transparent;
+    /* position: -webkit-sticky;
+    position: sticky; */
+    top: 100px; 
+}
+#home:hover
+{
+    padding: 0.5vw;
+    background-color: white;
+    color: black;
+    
+}
+/* --- END HEADER --- */
+
+/* --- BEGIN NAV --- */
+nav{
+    background-color: transparent;
+    font-family: moonhouseregular;
+    top: 0;
+    position: fixed;
+    width:100%;
+    margin: 0 auto;
+    text-decoration: none;
+    text-transform: uppercase;
+    
+}
+nav ul {
+    display: flex;  
+}
+nav ul li {
+    flex: auto;
+}
+
+nav ul li a
+{        
+    display: block;
+    text-align: center;
+    font-size: 1.5vw;
+    font-weight: normal;
+    color:white; 
+}
+.menu_niveau_2 {
+    display: none;
+    
+}
+.menu_niveau_2 li a {
+    
+    text-align: center;
+    font-size: 1.2vw;
+    font-weight: normal;
+    color:white;
+    background: none; 
+}
+.sousmenu:hover .menu_niveau_2 {
+    display: block;
+    
+}
+nav li a:hover {
+    background:white;
+    color: rgb(0, 0, 0);
+}
+
+
+/* END NAV */
+
+/* BEGIN INDEX */
+#image_index
+{
+    display: flex;
+    justify-content: center;
+}
+#image_index img
+{
+    width: 100%;
+}
+/* END INDEX */
+
+/* BEGIN SOLEIL */
+.generale
+{
+    display: flex;
+}
+.image
+{
+    width:65%;
+}
+.image img
+{
+    width: 100%;
+}
+.article_soleil
+{
+    width: 35%;
+    padding: 0 1vw 0 1vw;
+    overflow-wrap: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sous-titre
+{
+    margin-top: 1vh;
+}
+/* END SOLEIL */
+
+/* BEGIN PLANET */
+.article_planet
+{
+    width: 35%;
+    padding: 0 1vw 0 1vw;
+    overflow-wrap: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* END PLANET */
+
+/*BEGIN FOOTER*/
+footer{
+    margin-top: 2vh;
+}
+footer article
+{
+    display: flex;
+    justify-content: center;
+}
+#git
+{
+    text-decoration: none;
+    color: white;
+}
+/*END FOOTER */
+
+/* PAGE INSERTION */
+.selecteur
+{
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+}
+.formulaire
+{
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+.input
+{
+    margin-top: 0.5em;
+    width: 100%;
+}
+label
+{
+    color: white;
+}
+button
+{
+    background-color: white;
+    color: black;
+    border-radius: 5em;
+    padding: 0.5em;
+}
