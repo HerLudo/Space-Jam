@@ -8,6 +8,9 @@ $selecteur='Choisissez l\'élément que vous souhaitez ajouter';
 
 // $_GET['choix_table']=htmlspecialchars(strip_tags(addslashes($_GET['choix_table'])));
 
+$selecteur_planet=$systemeSolaire->query("SELECT id_planet, nom FROM planet");
+
+
 
 
 if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='satelitte'))
@@ -137,6 +140,16 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <label for="nom">Nom du satelitte</label>
             <input type="text" name="nom" id="nom">
         </div>
+
+        <div class="input">
+            <label for="selecteur">Astre mère</label>
+            <select name="selecteur" id="selecteur">
+                <?php while($astre=$selecteur_planet->fetch(PDO::FETCH_ASSOC)): ?>
+                    <option value="<?=$astre['id_planet']?>"><?=$astre['nom']?></option>
+                <?php endwhile;?>
+            </select>
+        </div>
+
         <div class="input">
             <label for="distance_astre">Distance par rapport à son astre mère </label>
             <input type="text" name="distance_astre" id="distance_astre">
