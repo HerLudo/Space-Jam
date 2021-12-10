@@ -213,7 +213,7 @@ nav li a:hover {
 
 /*BEGIN FOOTER*/
 footer{
-    margin-top: 2vh;
+    margin-top: 10vh;
 }
 footer article
 {
@@ -228,34 +228,93 @@ footer article
 /*END FOOTER */
 
 /* PAGE INSERTION */
-.selecteur
-{
-    margin: 0 auto;
-    text-align: center;
-    width: 50%;
-}
-.formulaire
-{
-    margin: 0 auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 50%;
-}
-.input
-{
-    margin-top: 0.5em;
-    width: 100%;
-}
-label
-{
-    color: white;
-}
 button
 {
     background-color: white;
     color: black;
     border-radius: 5em;
-    padding: 0.5em;
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    margin: 0 auto;
 }
+button:hover
+{
+    background-color: white;
+    color: goldenrod;
+}
+.selecteur
+{
+    margin: 5vh auto;
+    
+}
+    .selecteur form
+    {
+        margin: 0 auto;
+        width: 50%;
+        display: flex;
+        justify-content: space-around;
+    }
+        .selecteur form select
+        {
+            width: 60%;
+            text-align: center;
+        }
+.formulaire
+{
+    margin: 0 auto;
+    width: 50%;
+}
+
+    .form_sat
+    {
+        width: 100%;
+    }
+        button
+        {
+            margin: 1vw auto;
+        }
+        .input
+        {
+            margin: 0.5em auto 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: stretch;
+        }
+            .input label
+            {
+                color: white;
+                width:40%;
+                margin: 0.5em auto 0 auto;
+                text-align: center;
+                font-size: large;
+
+            }
+            .input input
+            {
+                width: 60%;
+            }
+            .input textarea
+            {
+                width: 60%;
+            }
+
+        #selecteurP
+        {
+            margin: 0.5em auto 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: stretch;
+        }
+            #selecteurP label
+            {
+                color: white;
+                width:40%;
+                margin: 0.5em auto 0 auto;
+                text-align: center;
+                font-size: large;
+            }
+            #selecteurP select
+            {
+                width: 60%;
+                text-align: center;
+            }
+            

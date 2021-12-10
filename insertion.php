@@ -2,7 +2,9 @@
 include_once 'nav.php';
 $hidden_planet='none';
 $hidden_satelitte='none';
-$selecteur='Choisissez l\'élément que vous souhaitez ajouter';
+$selecteurP='';
+$selecteurS='';
+
 
 // echo'<pre style="color:white;">';print_r($_POST);echo'</pre>';
 
@@ -23,7 +25,7 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
         {
             $hidden_planet='';
             $hidden_satelitte='none';
-            $selecteur='Entrer une nouvelle planète';
+            $selecteurP='selected';
 
             if(isset($_POST['nom'], $_POST['distance_soleil'], $_POST['position_soleil'], $_POST['rayon'], $_POST['masse'], $_POST['gravite'], $_POST['periode_orbitale'],$_POST['inclinaison_ecliptique'], $_POST['inclinaison_axe'], $_POST['journee'], $_POST['nombre_satellite'], $_POST['etymologie'], $_POST['description'])) 
             {
@@ -51,7 +53,7 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
         {
             $hidden_satelitte='';
             $hidden_planet='none';
-            $selecteur='Entrer un nouveau satellite';
+            $selecteurS='selected';
             break;
         }
     }
@@ -61,17 +63,15 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
 
 <div class="selecteur">
     <form action="" method="get">
-        <div>
-            <label for="choix_table"></label>
             <select name="choix_table" id="choix_table">
-                <option value="" selected><?= $selecteur?></option>
-                <option value="planet">Entrer une nouvelle planète</option>
-                <option value="satelitte">Entrer un nouveau satellite</option>
+                <option value="">Ajouter une planète ou un satellite</option>
+                <option value="planet" <?=$selecteurP?>>Entrer une nouvelle planète</option>
+                <option value="satelitte" <?=$selecteurS?>>Entrer un nouveau satellite</option>
             </select>
-            <button type="submit">Valider</button>
-        </div>
+            <button type="submit">Valider</button>      
     </form>
 </div>
+
 <!-- ###################################################### FORMULAIRE PLANETE ###################################################### -->
 <div class="formulaire" style="display:<?=$hidden_planet?>">
     <form action="" method="post">
@@ -134,14 +134,14 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
 </div>
 
 <!-- ###################################################### FORMULAIRE SATELITTE ###################################################### -->
-<div class="formulaire" style="display:<?=$hidden_satelitte?>">
-    <form action="" method="post">
+<div class="formulaire satelitte" style="display:<?=$hidden_satelitte?>">
+    <form action="" method="post" class="form_sat">
         <div class="input">
             <label for="nom">Nom du satelitte</label>
             <input type="text" name="nom" id="nom">
         </div>
 
-        <div class="input">
+        <div id="selecteurP">
             <label for="selecteur">Astre mère</label>
             <select name="selecteur" id="selecteur">
                 <?php while($astre=$selecteur_planet->fetch(PDO::FETCH_ASSOC)): ?>
@@ -151,15 +151,15 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
         </div>
 
         <div class="input">
-            <label for="distance_astre">Distance par rapport à son astre mère </label>
+            <label for="distance_astre">Distance à l'astre mère </label>
             <input type="text" name="distance_astre" id="distance_astre">
         </div>
         <div class="input">
-            <label for="position_astre">Position par rapport à son astre mère</label>
+            <label for="position_astre">Position à l'astre mère</label>
             <input type="text" name="position_astre" id="position_astre">
         </div>
         <div class="input">
-            <label for="rayon">Rayon moyen du satellite</label>
+            <label for="rayon">Rayon moyen</label>
             <input type="text" name="rayon" id="rayon">
         </div>
         <div class="input">
@@ -167,7 +167,7 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <input type="text" name="masse" id="masse">
         </div>
         <div class="input">
-            <label for="gravite">Gravité à sa surface</label>
+            <label for="gravite">Gravité surface</label>
             <input type="text" name="gravite" id="gravite">
         </div>
         <div class="input">
@@ -175,7 +175,7 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <input type="text" name="periode_orbitale" id="periode_orbitale">
         </div>
         <div class="input">
-            <label for="journee">Durée d'une journée</label>
+            <label for="journee">Journée</label>
             <input type="text" name="journee" id="journee">
         </div>
         <div class="input">
@@ -183,11 +183,11 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <input type="text" name="inclinaison_axe" id="inclinaison_axe">
         </div>
         <div class="input">
-            <label for="etymologie">Etymologie du nom</label>
-            <input type="text" name="etymologie" id="etymologie">
+            <label for="etymologie">Etymologie</label>
+            <textarea name="etymologie" id="" cols="30" rows="5" placeholde="Etymologie ..."></textarea>
         </div>
         <div class="input">
-            <label for="description"></label>
+            <label for="description">Description</label>
             <textarea name="description" id="" cols="30" rows="5" placeholde="Description ..."></textarea>
         </div>
         <div class="input">
