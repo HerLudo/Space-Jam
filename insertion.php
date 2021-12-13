@@ -1,24 +1,16 @@
 <?php
 include_once 'nav.php';
+
 $hidden_planet='none';
 $hidden_satelitte='none';
 $selecteurP='';
 $selecteurS='';
 
-
-// echo'<pre style="color:white;">';print_r($_POST);echo'</pre>';
-
-// $_GET['choix_table']=htmlspecialchars(strip_tags(addslashes($_GET['choix_table'])));
-
-$selecteur_planet=$systemeSolaire->query("SELECT id_planet, nom FROM planet");
-
-
-
+$selecteur_planet=$systemeSolaire->query("SELECT id_planet, nom FROM planet WHERE (nombre_satellite!=0 || nombre_satellite!=null)");
 
 if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='satelitte'))
 {
     
-
     switch($_GET['choix_table'])
     {
         case 'planet':
@@ -54,6 +46,29 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             $hidden_satelitte='';
             $hidden_planet='none';
             $selecteurS='selected';
+            if(isset($_POST['nom_sat'], $_POST['planet_id'], $_POST['distance_astre'], $_POST['position_astre'], $_POST['rayon_sat'], $_POST['masse_sat'], $_POST['gravite_sat'], $_POST['periode_orbitale_sat'], $_POST['journee_sat'], $_POST['inclinaison_orbitale_sat'], $_POST['etymologie'], $_POST['description']))
+            {
+                
+                foreach($_POST as $key=>$value)
+                {
+                    $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
+                }
+
+                $insertion_sat=$systemeSolaire->prepare("INSERT INTO satelitte (planet_id, nom_sat, distance_astre, position_astre, rayon_sat, masse_sat, gravite_sat, periode_orbitale_sat, inclinaison_orbitale_sat, journee_sat, etymologie, description) VALUES (:planet_id, :nom_sat, :distance_astre, :position_astre, :rayon_sat, :masse_sat, :gravite_sat, :periode_orbitale_sat, :inclinaison_orbitale_sat, :journee_sat, :etymologie, :description)");
+                
+                foreach ($_POST as $key => $value)
+                {
+                    if($key=='position_astre' || $key=='planet_id')
+                        $insertion_sat->bindValue(":$key", $value, PDO::PARAM_INT);
+
+                    else 
+                    {
+                        $insertion_sat->bindValue(":$key", $value, PDO::PARAM_STR);
+                    }
+                }
+                $insertion_sat->execute();
+
+            }
             break;
         }
     }
@@ -137,13 +152,13 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
 <div class="formulaire satelitte" style="display:<?=$hidden_satelitte?>">
     <form action="" method="post" class="form_sat">
         <div class="input">
-            <label for="nom">Nom du satelitte</label>
-            <input type="text" name="nom" id="nom">
+            <label for="nom_sat">Nom du satelitte</label>
+            <input type="text" name="nom_sat" id="nom_sat">
         </div>
 
         <div id="selecteurP">
-            <label for="selecteur">Astre mère</label>
-            <select name="selecteur" id="selecteur">
+            <label for="planet_id">Astre mère</label>
+            <select name="planet_id" id="planet_id">
                 <?php while($astre=$selecteur_planet->fetch(PDO::FETCH_ASSOC)): ?>
                     <option value="<?=$astre['id_planet']?>"><?=$astre['nom']?></option>
                 <?php endwhile;?>
@@ -159,28 +174,28 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <input type="text" name="position_astre" id="position_astre">
         </div>
         <div class="input">
-            <label for="rayon">Rayon moyen</label>
-            <input type="text" name="rayon" id="rayon">
+            <label for="rayon_sat">Rayon moyen</label>
+            <input type="text" name="rayon_sat" id="rayon_sat">
         </div>
         <div class="input">
-            <label for="masse">Masse</label>
-            <input type="text" name="masse" id="masse">
+            <label for="masse_sat">Masse</label>
+            <input type="text" name="masse_sat" id="masse_sat">
         </div>
         <div class="input">
-            <label for="gravite">Gravité surface</label>
-            <input type="text" name="gravite" id="gravite">
+            <label for="gravite_sat">Gravité surface</label>
+            <input type="text" name="gravite_sat" id="gravite_sat">
         </div>
         <div class="input">
-            <label for="periode_orbitale">Période orbitale</label>
-            <input type="text" name="periode_orbitale" id="periode_orbitale">
+            <label for="periode_orbitale_sat">Période orbitale</label>
+            <input type="text" name="periode_orbitale_sat" id="periode_orbitale_sat">
         </div>
         <div class="input">
-            <label for="journee">Journée</label>
-            <input type="text" name="journee" id="journee">
+            <label for="journee_sat">Journée</label>
+            <input type="text" name="journee_sat" id="journee_sat">
         </div>
         <div class="input">
-            <label for="inclinaison_axe">Inclinaison orbitale</label>
-            <input type="text" name="inclinaison_axe" id="inclinaison_axe">
+            <label for="inclinaison_orbitale_sat">Inclinaison orbitale</label>
+            <input type="text" name="inclinaison_orbitale_sat" id="inclinaison_orbitale_sat">
         </div>
         <div class="input">
             <label for="etymologie">Etymologie</label>
