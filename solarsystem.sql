@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 13 déc. 2021 à 16:06
+-- Généré le : lun. 13 déc. 2021 à 21:31
 -- Version du serveur : 10.4.21-MariaDB
 -- Version de PHP : 8.0.12
 
@@ -67,18 +67,25 @@ INSERT INTO `planet` (`id_planet`, `nom`, `distance_soleil`, `position_soleil`, 
 CREATE TABLE `satelitte` (
   `id_satelitte` int(3) NOT NULL,
   `planet_id` int(3) NOT NULL,
-  `nom` varchar(200) NOT NULL,
-  `distance_astre` float NOT NULL,
+  `nom_sat` varchar(200) NOT NULL,
+  `distance_astre` varchar(250) NOT NULL,
   `position_astre` int(3) NOT NULL,
-  `rayon` float NOT NULL,
-  `masse` varchar(200) NOT NULL,
-  `gravite` varchar(200) NOT NULL,
-  `periode_orbitale` float NOT NULL,
-  `inclinaison` float NOT NULL,
-  `journee` float NOT NULL,
+  `rayon_sat` varchar(250) NOT NULL,
+  `masse_sat` varchar(200) NOT NULL,
+  `gravite_sat` varchar(200) NOT NULL,
+  `periode_orbitale_sat` varchar(250) NOT NULL,
+  `inclinaison_orbitale_sat` varchar(250) NOT NULL,
+  `journee_sat` varchar(250) NOT NULL,
   `etymologie` text NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `satelitte`
+--
+
+INSERT INTO `satelitte` (`id_satelitte`, `planet_id`, `nom_sat`, `distance_astre`, `position_astre`, `rayon_sat`, `masse_sat`, `gravite_sat`, `periode_orbitale_sat`, `inclinaison_orbitale_sat`, `journee_sat`, `etymologie`, `description`) VALUES
+(1, 4, 'La Lune', '384 399km', 1, '1737,4 km', '7,3477 x 10^22 kg', '1,622 m/s²', '27 jours 7 heures 43 minutes', '5,145°', '27,322 jours', 'En latin, lucere, dont luna serait dérivé, se rapporte à la brillance et la lumière. Le mot anglais « moon » trouve aussi son étymologie dans le mot mensis, signifiant « mois » en latin.', 'Le seul et unique satellite naturel de notre planète, la Terre.');
 
 --
 -- Index pour les tables déchargées
@@ -111,7 +118,7 @@ ALTER TABLE `planet`
 -- AUTO_INCREMENT pour la table `satelitte`
 --
 ALTER TABLE `satelitte`
-  MODIFY `id_satelitte` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_satelitte` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Contraintes pour les tables déchargées
