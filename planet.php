@@ -12,7 +12,7 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
 ?>
 
 <h2><?php if($_GET['id_planet']=='terre') echo'La '.$varPlanet; else echo$varPlanet;?></h2>
-<p><?= $planet[0]['description'];?></p>
+<p class="sous-titre"><?= $planet[0]['description'];?></p>
     <section class="generale">
 
         <div class="image">
@@ -25,7 +25,7 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
             <table class="tableau">
                 <?php foreach($planet[0] as $key=>$value): ?>                        
                     <?php if($key=='rayon' || $key=='masse' || $key=='gravite'): ?> 
-                     <tr><td class="titreColonneTableau"><?= ($key=='gravite') ? 'gravité' : $key; ?> :</td><td><?=$value?></td></tr>
+                     <tr><td class="titreColonneTableau"><?= ($key=='gravite') ? 'gravité' : $key; ?> :</td><td> <?=$value?></td></tr>
                     <?php endif;?>
                 <?php endforeach; ?>
             </table>
@@ -34,7 +34,7 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
 
             <table class="tableau">
             <?php foreach($planet[0] as $key=>$value): ?>                        
-                    <?php if($key!='id_planet' && $key!='rayon' && $key!='masse' && $key!='gravite' && $key!='etymologie' && $key!='description'): ?> 
+                    <?php if($key!='id_planet' && $key!='rayon' && $key!='masse' && $key!='gravite' && $key!='etymologie' && $key!='description' && $key!='nom'): ?> 
                      <tr> <td class="titreColonneTableau"> <?= str_replace("_", " ", $key); ?> :</td> <td> <?= $value; ?></td> </tr>
                     <?php endif;?>
                 <?php endforeach; ?>
