@@ -1,9 +1,18 @@
 <?php
 include_once 'nav.php';
 
-if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus' || $_GET['id_planet']=='terre' || $_GET['id_planet']=='mars' || $_GET['id_planet']=='jupiter' || $_GET['id_planet']=='saturne' || $_GET['id_planet']=='uranus' || $_GET['id_planet']=='neptune' )): ?>
+if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus' || $_GET['id_planet']=='terre' || $_GET['id_planet']=='mars' || $_GET['id_planet']=='jupiter' || $_GET['id_planet']=='saturne' || $_GET['id_planet']=='uranus' || $_GET['id_planet']=='neptune' )): 
 
-<h2><?php if($_GET['id_planet']=='terre') echo'La '.$_GET['id_planet']; else echo$_GET['id_planet'];?></h2>
+    $varPlanet=ucfirst($_GET['id_planet']);
+    $planets=$systemeSolaire->prepare("SELECT * FROM planet WHERE nom=:nom");
+    $planets->bindValue(':nom', $varPlanet, PDO::PARAM_STR);
+    $planets->execute();
+    $planet=$planets->fetchAll(PDO::FETCH_ASSOC);
+    
+?>
+
+<h2><?php if($_GET['id_planet']=='terre') echo'La '.$varPlanet; else echo$varPlanet;?></h2>
+<p><?= $planet[0]['description'];?></p>
     <section class="generale">
 
         <div class="image">
@@ -12,17 +21,27 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
 
         <article class="article_planet">
             <h3>Données Physiques</h3>
-            <p> Le soleil est une étoile de type naine jaune. Sa masse est d'environ 1,989 x10^30 kg, sa masse représente environ 99% de la masse totale du système solaire. Il est composé d'environ 75% d'hydrogène et 25% d'hélium. L'hydrogène représente environ 92% de son volume total et l'hélium les 8% restants.</p>
+            
+            <table class="tableau">
+                <?php foreach($planet[0] as $key=>$value): ?>                        
+                    <?php if($key=='rayon' || $key=='masse' || $key=='gravite'): ?> 
+                     <tr><td class="titreColonneTableau"><?= ($key=='gravite') ? 'gravité' : $key; ?> :</td><td><?=$value?></td></tr>
+                    <?php endif;?>
+                <?php endforeach; ?>
+            </table>
 
             <h3 class="sous-titre">Données Astronomiques</h3>
 
-            <p>Le soleil fait partie de notre galaxie que l'on appelle la "Voie Lactée",il se situe dans le bras d'Orion à environ 26 100 années-lumières (8kpc - parsec) du centre galactique. Il se déplace à une vitesse d'environ 250km/s et fait le tour de la Voie Lactée (orbite) en environ 220 millions d'année. Il tourne sur lui même (rotation) en environ 27 jours.</p>
-
-            <h3 class="sous-titre">Données Historiques</h3>
-            <p>Le soleil est agé d'environ 4,57 milliards d'années, un peu moins de la moitié de sa séquence principale.</p>
+            <table class="tableau">
+            <?php foreach($planet[0] as $key=>$value): ?>                        
+                    <?php if($key!='id_planet' && $key!='rayon' && $key!='masse' && $key!='gravite' && $key!='etymologie' && $key!='description'): ?> 
+                     <tr> <td class="titreColonneTableau"> <?= str_replace("_", " ", $key); ?> :</td> <td> <?= $value; ?></td> </tr>
+                    <?php endif;?>
+                <?php endforeach; ?>
+            </table>
 
             <h3 class="sous-titre">Étymologie</h3>
-            <p>Le mot soleil est issu du latin "sol/solis" désignant l'astre, le dieu. </p>
+            <p><?= $planet[0]['etymologie'];?></p>
         </article>
 
     </section>
