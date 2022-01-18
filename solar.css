@@ -196,6 +196,10 @@ nav li a:hover {
 /* END SOLEIL */
 
 /* BEGIN PLANET */
+.sous-titre
+{
+    text-align: center;
+}
 .article_planet
 {
     width: 35%;
