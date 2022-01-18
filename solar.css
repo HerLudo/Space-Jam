@@ -152,8 +152,6 @@ nav li a:hover {
     background:white;
     color: rgb(0, 0, 0);
 }
-
-
 /* END NAV */
 
 /* BEGIN INDEX */
@@ -207,6 +205,19 @@ nav li a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+    .article_planet h3
+    {
+        margin : 1vw 0 1vw 0;
+    }
+.tableau
+{
+    color:white;
+}
+.titreColonneTableau
+{
+    font-family: moonhouseregular;
+    font-size: 1.5em;
 }
 
 /* END PLANET */
