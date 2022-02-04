@@ -230,17 +230,19 @@ article
 /*BEGIN FOOTER*/
 footer{
     margin-top: 10vh;
-}
-footer article
-{
-    display: flex;
+    /* display: flex;
     justify-content: center;
+    justify-content: center; */
 }
-#git
+
+/* .git {
+    margin-top: 1.1vw;
+    margin-right: 2vw;
+}
+.gitimg
 {
-    text-decoration: none;
-    color: white;
-}
+    width: 6vw;
+} */
 /*END FOOTER */
 
 /* PAGE INSERTION */
