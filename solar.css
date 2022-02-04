@@ -200,7 +200,7 @@ nav li a:hover {
 {
     text-align: center;
 }
-.article_planet
+article
 {
     width: 35%;
     padding: 0 1vw 0 1vw;
@@ -210,10 +210,11 @@ nav li a:hover {
     justify-content: center;
     align-items: center;
 }
-    .article_planet h3
+    article h3
     {
         margin : 1vw 0 1vw 0;
     }
+    
 .tableau
 {
     color:white;
