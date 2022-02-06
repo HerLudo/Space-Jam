@@ -16,9 +16,7 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
         $satellites->execute();
         $satellites=$satellites->fetchAll(PDO::FETCH_ASSOC);
     }
-    
     $compteur=0;
-    debug($satellites);
 ?>
 
     <h2><?= ($_GET['id_planet']=='terre') ? 'La '.$varPlanet : $varPlanet;?></h2>
@@ -60,60 +58,91 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
 
     <?php if($satellites): ?>
 
-        <?php foreach($satellites as $satellite):    
+        <?php foreach($satellites as $satellite): 
             $compteur++;
-            $hiddenLeft = ($compteur%2!=1)? 'hidden' : '' ;
-            $hiddenRight = ($compteur%2==1)? 'hidden' : '' ;
-                foreach($satellite as $key=> $value): 
+            $extention=pathinfo("pictures/$satellite[nom_sat]", PATHINFO_EXTENSION);
+            
+        ?>
+             
+            <h2 id="<?=$satellite['nom_sat']?>"><?= ($satellite['nom_sat']=='lune') ? 'La Lune' : ucfirst($satellite['nom_sat']); debug($extention);?></h2>
 
-                    if($key=='nom_sat'):?>
-                        <h2 id="<?=$value?>"><?= ($value='lune') ? 'La Lune' : ucfirst($value);?></h2>
-                    <?php endif;?>
+            <section class="generale">
+                <?php if($compteur%2==1):?>
 
-                        <section class="generale">
+                    <div class="image-gauche">
+                        <?php if($key=='nom_sat'):?>
+                            <img  src="pictures/<?=$value;?>.jpg" alt="Photo de <?= $value;?>">
+                        <?php endif;?>
+                    </div>
 
-                            <div class="image-gauche" <?= $hiddenRight;?>>
-                            <?php if($key=='nom_sat'):?>
-                                <img  src="pictures/<?=$value;?>.jpg" alt="Photo de <?= $value;?>">
+                    <article class="article article_sat">
+
+                        <h3>Données Physiques</h3>
+                        <?php  foreach($satellite as $key=> $value):?>                  
+                            <table class="tableau">
+                                <?php if($key=='rayon_sat' || $key=='masse_sat' || $key=='gravite_sat'): ?> 
+                                <tr><td class="titreColonneTableau"><?= ($key=='gravite_sat') ? 'gravité' : str_replace("_sat", "",$key); ?> :</td>
+                                <td> <?=$value?></td></tr>
+                                <?php endif;?>
+                            </table>
+                        <?php endforeach;?>
+
+                        <h3 class="sous-titre-sat">Données Astronomiques</h3>
+                        <?php  foreach($satellite as $key=> $value):?>
+                            <table class="tableau">
+                                <?php if($key!='rayon_sat' && $key!='masse_sat' && $key!='gravite_sat' && $key!='etymologie_sat' && $key!='description_sat' && $key!='nom_sat'): ?> 
+                                <tr> <td class="titreColonneTableau"> <?= ($key=='gravite') ? 'gravité' : str_replace("_sat", " ", $key); ?> :</td> 
+                                <td> <?= $value; ?></td> </tr>
+                                <?php endif;?>
+                            </table>                             
+                        <?php endforeach;?>     
+
+                        <h3 class="sous-titre-sat">Étymologie</h3>
+                        <?php  foreach($satellite as $key=> $value):?>
+                            <?php if($key=='etymologie_sat'):?>
+                                <p><?= $value;?></p>
                             <?php endif;?>
-                            </div>
-                <?php endforeach;?>
+                        <?php endforeach;?> 
+                    </article>
 
-                            <article class="article article_sat">
+                <?php else: ?>
+                    <article class="article article_sat">
 
-                                <h3>Données Physiques</h3>
-                                <?php  foreach($satellite as $key=> $value):?>                  
-                                    <table class="tableau">
-                                        <?php if($key=='rayon_sat' || $key=='masse_sat' || $key=='gravite_sat'): ?> 
-                                        <tr><td class="titreColonneTableau"><?= ($key=='gravite_sat') ? 'gravité' : str_replace("_sat", "",$key); ?> :</td>
-                                        <td> <?=$value?></td></tr>
-                                        <?php endif;?>
-                                    </table>
-                                <?php endforeach;?>
+                        <h3>Données Physiques</h3>
+                        <?php  foreach($satellite as $key=> $value):?>                  
+                            <table class="tableau">
+                                <?php if($key=='rayon_sat' || $key=='masse_sat' || $key=='gravite_sat'): ?> 
+                                <tr><td class="titreColonneTableau"><?= ($key=='gravite_sat') ? 'gravité' : str_replace("_sat", "",$key); ?> :</td>
+                                <td> <?=$value?></td></tr>
+                                <?php endif;?>
+                            </table>
+                        <?php endforeach;?>
 
-                                <h3 class="sous-titre-sat">Données Astronomiques</h3>
-                                <?php  foreach($satellite as $key=> $value):?>
-                                    <table class="tableau">
-                                        <?php if($key!='rayon_sat' && $key!='masse_sat' && $key!='gravite_sat' && $key!='etymologie_sat' && $key!='description_sat' && $key!='nom_sat'): ?> 
-                                        <tr> <td class="titreColonneTableau"> <?= ($key=='gravite') ? 'gravité' : str_replace("_sat", " ", $key); ?> :</td> 
-                                        <td> <?= $value; ?></td> </tr>
-                                        <?php endif;?>
-                                    </table>                             
-                                <?php endforeach;?>     
+                        <h3 class="sous-titre-sat">Données Astronomiques</h3>
+                        <?php  foreach($satellite as $key=> $value):?>
+                            <table class="tableau">
+                                <?php if($key!='rayon_sat' && $key!='masse_sat' && $key!='gravite_sat' && $key!='etymologie_sat' && $key!='description_sat' && $key!='nom_sat'): ?> 
+                                <tr> <td class="titreColonneTableau"> <?= ($key=='gravite') ? 'gravité' : str_replace("_sat", " ", $key); ?> :</td> 
+                                <td> <?= $value; ?></td> </tr>
+                                <?php endif;?>
+                            </table>                             
+                        <?php endforeach;?>     
 
-                                <h3 class="sous-titre-sat">Étymologie</h3>
-                                <?php  foreach($satellite as $key=> $value):?>
-                                    <?php if($key=='etymologie_sat'):?>
-                                        <p><?= $value;?></p>
-                                    <?php endif;?>
-                                <?php endforeach;?> 
-                            </article>
+                        <h3 class="sous-titre-sat">Étymologie</h3>
+                        <?php  foreach($satellite as $key=> $value):?>
+                            <?php if($key=='etymologie_sat'):?>
+                                <p><?= $value;?></p>
+                            <?php endif;?>
+                        <?php endforeach;?> 
+                    </article>
 
-                            <div class="image-droite" <?= $hiddenleft;?>>
-                                <img  src="pictures/<?=($satellite['nom_sat']=='La lune') ? str_replace("La lune","lune",$satellite['nom_sat']) : $satellite['nom_sat'] ;?>.jpg" alt="Photo de <?= $satellite['nom_sat'];?>">
-                            </div>
-
-                        </section>
+                    <div class="image-droite">
+                        <?php if($key=='nom_sat'):?>
+                            <img  src="pictures/<?=$value;?>.jpg" alt="Photo de <?= $value;?>">
+                        <?php endif;?>
+                    </div>
+                <?php endif;?>
+            </section>
         <?php endforeach; 
     endif;
 endif;?>
