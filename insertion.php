@@ -5,9 +5,10 @@ $hidden_planet='none';
 $hidden_satelitte='none';
 $selecteurP='';
 $selecteurS='';
-
 $selecteur_planet=$systemeSolaire->query("SELECT id_planet, nom FROM planet WHERE (nombre_satellite!=0 || nombre_satellite!=null)");
 
+
+/*########## selecteur table && selecteur affichage && selecteur requête SQL ########## */
 if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='satelitte'))
 {
     
@@ -27,7 +28,7 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
                 }
 
 
-                $insertion=$systemeSolaire->prepare("INSERT INTO planet (nom, distance_soleil, position_soleil, rayon, masse, gravite, periode_orbitale, inclinaison_ecliptique, journee, inclinaison_axe, nombre_satellite, etymologie, description) VALUES (:nom, :distance_soleil, :position_soleil, :rayon, :masse, :gravite, :periode_orbitale, :inclinaison_ecliptique, :journee, :inclinaison_axe,  :nombre_satellite, :etymologie, :description)");
+                $insertion=$systemeSolaire->prepare("INSERT INTO planet (nom, distance_soleil, position_soleil, rayon, masse, gravite, periode_orbitale, inclinaison_ecliptique, journee, inclinaison_axe, nombre_satellite, etymologie, description) VALUES (:nom, :distance_soleil, :position_soleil, :rayon, :masse, :gravite, :periode_orbitale, :inclinaison_ecliptique, :journee, :inclinaison_axe, :nombre_satellite, :etymologie, :description)");
 
                 foreach ($_POST as $key => $value)
                 {
@@ -46,15 +47,14 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             $hidden_satelitte='';
             $hidden_planet='none';
             $selecteurS='selected';
-            if(isset($_POST['nom_sat'], $_POST['planet_id'], $_POST['distance_astre'], $_POST['position_astre'], $_POST['rayon_sat'], $_POST['masse_sat'], $_POST['gravite_sat'], $_POST['periode_orbitale_sat'], $_POST['journee_sat'], $_POST['inclinaison_orbitale_sat'], $_POST['etymologie'], $_POST['description']))
+            if(isset($_POST))
             {
-                
                 foreach($_POST as $key=>$value)
                 {
                     $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
                 }
 
-                $insertion_sat=$systemeSolaire->prepare("INSERT INTO satelitte (planet_id, nom_sat, distance_astre, position_astre, rayon_sat, masse_sat, gravite_sat, periode_orbitale_sat, inclinaison_orbitale_sat, journee_sat, etymologie, description) VALUES (:planet_id, :nom_sat, :distance_astre, :position_astre, :rayon_sat, :masse_sat, :gravite_sat, :periode_orbitale_sat, :inclinaison_orbitale_sat, :journee_sat, :etymologie, :description)");
+                $insertion_sat=$systemeSolaire->prepare("INSERT INTO satelitte (planet_id, nom_sat, distance_astre, position_astre, rayon_sat, masse_sat, gravite_sat, periode_orbitale_sat, inclinaison_orbitale_sat, journee_sat, etymologie_sat, description_sat) VALUES (:planet_id, :nom_sat, :distance_astre, :position_astre, :rayon_sat, :masse_sat, :gravite_sat, :periode_orbitale_sat, :inclinaison_orbitale_sat, :journee_sat, :etymologie_sat, :description_sat)");
                 
                 foreach ($_POST as $key => $value)
                 {
@@ -73,7 +73,6 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
         }
     }
 }
-
 ?>
 
 <div class="selecteur">
@@ -151,10 +150,6 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
 <!-- ###################################################### FORMULAIRE SATELITTE ###################################################### -->
 <div class="formulaire satelitte" style="display:<?=$hidden_satelitte?>">
     <form action="" method="post" class="form_sat">
-        <div class="input">
-            <label for="nom_sat">Nom du satelitte</label>
-            <input type="text" name="nom_sat" id="nom_sat">
-        </div>
 
         <div id="selecteurP">
             <label for="planet_id">Astre mère</label>
@@ -163,6 +158,11 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
                     <option value="<?=$astre['id_planet']?>"><?=$astre['nom']?></option>
                 <?php endwhile;?>
             </select>
+        </div>
+
+        <div class="input">
+            <label for="nom_sat">Nom du satelitte</label>
+            <input type="text" name="nom_sat" id="nom_sat">
         </div>
 
         <div class="input">
@@ -190,20 +190,20 @@ if(isset($_GET) && ($_GET['choix_table']=='planet' || $_GET['choix_table']=='sat
             <input type="text" name="periode_orbitale_sat" id="periode_orbitale_sat">
         </div>
         <div class="input">
-            <label for="journee_sat">Journée</label>
-            <input type="text" name="journee_sat" id="journee_sat">
-        </div>
-        <div class="input">
             <label for="inclinaison_orbitale_sat">Inclinaison orbitale</label>
             <input type="text" name="inclinaison_orbitale_sat" id="inclinaison_orbitale_sat">
         </div>
         <div class="input">
-            <label for="etymologie">Etymologie</label>
-            <textarea name="etymologie" id="" cols="30" rows="5" placeholde="Etymologie ..."></textarea>
+            <label for="journee_sat">Journée</label>
+            <input type="text" name="journee_sat" id="journee_sat">
         </div>
         <div class="input">
-            <label for="description">Description</label>
-            <textarea name="description" id="" cols="30" rows="5" placeholde="Description ..."></textarea>
+            <label for="etymologie_sat">Etymologie</label>
+            <textarea name="etymologie_sat" id="" cols="30" rows="5" placeholde="Etymologie ..."></textarea>
+        </div>
+        <div class="input">
+            <label for="description_sat">Description</label>
+            <textarea name="description_sat" id="" cols="30" rows="5" placeholde="Description ..."></textarea>
         </div>
         <div class="input">
             <button type="submit">Enregistrer</button>
