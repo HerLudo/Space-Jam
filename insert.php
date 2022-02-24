@@ -123,6 +123,7 @@ if (isset($_GET))
             $upPlanet->execute();              
         }
     }
+    
     elseif(isset($_GET['sat']))
     {
         $satUpdate=$systemeSolaire->prepare("SELECT * FROM satelitte WHERE id_satelitte =:id_satelitte ");
