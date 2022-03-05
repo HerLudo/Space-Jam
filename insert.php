@@ -142,13 +142,14 @@ if (isset($_GET))
             foreach($_POST as $key=>$value)
             {
                 $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
-
-                if($key=='planet_id ' || $key=='position_astre')
+                
+                if($key=='planet_id' || $key=='position_astre')
                 $upSatellite->bindValue(":$key", $value, PDO::PARAM_INT);
 
                 else
                 $upSatellite->bindValue(":$key", $value, PDO::PARAM_STR);
             }
+            $upSatellite->bindValue(":id_satelitte", $_GET['sat'], PDO::PARAM_INT);
             $upSatellite->execute();
         }
     }
@@ -351,3 +352,5 @@ if (isset($_GET))
 <?php
 include_once 'footer.php';
 ?>
+
+
