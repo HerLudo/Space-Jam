@@ -1,6 +1,9 @@
 <?php
 include_once 'nav.php';
 
+define("RACINE_SITE", $_SERVER['DOCUMENT_ROOT'].'/systèmeSolaire/V2/');
+define("URL", "http://localhost//systèmeSolaire/V2/");
+
 $hidden_planet='none';
 $hidden_satelitte='none';
 $selectPlanetForm='none';
@@ -16,8 +19,7 @@ $selecteur_planet_sat=$systemeSolaire->query("SELECT id_planet, nom FROM planet 
 $selecteur_sat=$systemeSolaire->query("SELECT id_planet, nom, id_satelitte, nom_sat FROM satelitte INNER JOIN planet ON satelitte.planet_id=planet.id_planet");
 
 
-
-/*########## selecteur table && selecteur affichage && selecteur requête SQL ########## */
+/*###################################################### ACTION ###################################################### */
 if (isset($_GET))
 {
     if(isset($_GET['action']))
@@ -91,9 +93,10 @@ if (isset($_GET))
             }
         }
     }    
-
+    //Planet Update
     if (isset($_GET['idPlanet']))
     {
+        //récupération de l'enregistrement lié à l'ID
         $planetUpdate=$systemeSolaire->prepare("SELECT * FROM planet WHERE id_planet=:idPlanet");
         $planetUpdate->bindValue(":idPlanet", $_GET['idPlanet'], PDO::PARAM_INT);
         $planetUpdate->execute();
@@ -102,12 +105,16 @@ if (isset($_GET))
         $hidden_planet='';
         $hidden_satelitte='none';
         $selectUP='selected';
-
+        
+        //Si il y a déjà une image pour cette id, on récupère l'adresse.
+        $pictureBDD= (!empty($planetValues['picture'])) ? $planetValues['picture'] : '' ;
+        
         if(isset($_POST['id_planet']))
         {
             //Requete Update
             $upPlanet=$systemeSolaire->prepare("UPDATE planet SET nom = :nom, distance_soleil = :distance_soleil, position_soleil = :position_soleil, rayon = :rayon, masse = :masse, gravite = :gravite, periode_orbitale = :periode_orbitale, inclinaison_ecliptique = :inclinaison_ecliptique, journee = :journee, inclinaison_axe = :inclinaison_axe, nombre_satellite = :nombre_satellite, etymologie = :etymologie, description = :description, picture = :picture WHERE id_planet = :id_planet");
-            
+            // debug($_FILES);           
+            // debug($_POST);
             foreach($_POST as $key=>$value)
             {
                 $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
@@ -118,12 +125,25 @@ if (isset($_GET))
                 else
                 $upPlanet->bindValue(":$key", $value, PDO::PARAM_STR);
             }
-            
+
+            if($_FILES)
+            {                       
+                $nomPicture=mb_strtolower($_POST['nom']);
+                $extention=substr(stristr($_FILES['picture']['type'], "/"),1);
+                debug($extention);
+                $pictureBDD=URL."pictures/$nomPicture.".$extention;
+                $pictureRepo = RACINE_SITE . "pictures/$nomPicture.$extention";
+                debug($pictureRepo);
+                copy($_FILES['picture']['tmp_name'], $pictureRepo);
+            }
+
+            $upPlanet->bindValue(":picture", $pictureBDD, PDO::PARAM_STR);
             
             $upPlanet->execute();              
         }
     }
-    
+
+    //Sat Update
     elseif(isset($_GET['sat']))
     {
         $satUpdate=$systemeSolaire->prepare("SELECT * FROM satelitte WHERE id_satelitte =:id_satelitte ");
@@ -212,7 +232,7 @@ if (isset($_GET))
 
 <!-- ###################################################### FORMULAIRE PLANETE ###################################################### -->
 <div class="formulaire" style="display:<?=$hidden_planet?>">
-    <form action="" method="post">
+    <form enctype="multipart/form-data" action="" method="post">
         <?php if(isset($_GET['idPlanet'])):?>
             <input type="hidden" name="id_planet" value="<?=$planetValues['id_planet']?>">
         <?php endif; ?>    
@@ -281,7 +301,7 @@ if (isset($_GET))
 
 <!-- ###################################################### FORMULAIRE SATELITTE ###################################################### -->
 <div class="formulaire satelitte" style="display:<?=$hidden_satelitte?>">
-    <form action="" method="post" class="form_sat">
+    <form action="" method="post" class="form_sat" enctype="multipart/form-data">
         <div id="selecteurP">
             <label for="planet_id">Astre mère</label>
             <select name="planet_id" id="planet_id">
