@@ -24,8 +24,8 @@ if(isset($_GET) && ($_GET['id_planet']=='mercure' || $_GET['id_planet']=='venus'
     <p class="sous-titre"><?= $planet['description'];?></p>
 
         <section class="generale">
-            <div class="image">
-                <img src="pictures/<?=$_GET['id_planet'];?>.jpg" alt="Photo de <?= $_GET['id_planet'];?>" id="<?=$_GET['id_planet'];?>">
+            <div class="image">   
+                <img src="<?=$planet['picture'];?>" alt="Photo de <?=$_GET['id_planet'];?>" id="<?=$_GET['id_planet'];?>">
             </div>
             <article class="article_planet">
                 <h3>Données Physiques</h3>
