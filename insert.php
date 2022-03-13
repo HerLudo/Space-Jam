@@ -32,9 +32,11 @@ if (isset($_GET))
                 $hidden_satelitte='none';
                 $selectP='selected';
 
-                if(isset($_POST['nom'], $_POST['distance_soleil'], $_POST['position_soleil'], $_POST['rayon'], $_POST['masse'], $_POST['gravite'], $_POST['periode_orbitale'],$_POST['inclinaison_ecliptique'], $_POST['inclinaison_axe'], $_POST['journee'], $_POST['nombre_satellite'], $_POST['etymologie'], $_POST['description'], $_POST['picture'])) 
+                debug($_POST);
+                debug($_FILES);
+
+                if(isset($_POST['nom'], $_POST['distance_soleil'], $_POST['position_soleil'], $_POST['rayon'], $_POST['masse'], $_POST['gravite'], $_POST['periode_orbitale'],$_POST['inclinaison_ecliptique'], $_POST['inclinaison_axe'], $_POST['journee'], $_POST['nombre_satellite'], $_POST['etymologie'], $_POST['description'])) 
                 {
-                    
                     foreach($_POST as $key=>$value)
                     {
                         $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
@@ -47,10 +49,21 @@ if (isset($_GET))
                         $insertion->bindValue(":$key", $value, PDO::PARAM_INT);
                         else
                         $insertion->bindValue(":$key", $value, PDO::PARAM_STR);
+                    } 
+
+                    if(isset($_FILES['picture']))
+                    {
+                        $nomPicture=mb_strtolower($_POST['nom']);
+                        $extention=substr(stristr($_FILES['picture']['type'], "/"),1);
+                        $pictureBDD=URL."pictures/$nomPicture.".$extention;
+                        $pictureRepo = RACINE_SITE . "pictures/$nomPicture.$extention";
+                        copy($_FILES['picture']['tmp_name'], $pictureRepo);
+                        $insertion->bindValue(":picture", $pictureBDD, PDO::PARAM_STR);
                     }
                     
                     $insertion->execute();              
                 }
+                header('location: '.URL.'insert.php');
                 break;
             }
 
@@ -59,7 +72,8 @@ if (isset($_GET))
                 $hidden_satelitte='';
                 $hidden_planet='none';
                 $selectS='selected';
-                if(isset($_POST))
+
+                if(isset($_POST['planet_id'], $_POST['nom_sat'], $_POST['distance_astre'], $_POST['position_astre'], $_POST['rayon_sat'], $_POST['masse_sat'], $_POST['gravite_sat'], $_POST['periode_orbitale_sat'], $_POST['inclinaison_orbitale_sat'], $_POST['journee_sat'], $_POST['etymologie_sat'], $_POST['description_sat']))
                 {
                     $insertion_sat=$systemeSolaire->prepare("INSERT INTO satelitte (planet_id, nom_sat, distance_astre, position_astre, rayon_sat, masse_sat, gravite_sat, periode_orbitale_sat, inclinaison_orbitale_sat, journee_sat, etymologie_sat, description_sat, picture_sat) VALUES (:planet_id, :nom_sat, :distance_astre, :position_astre, :rayon_sat, :masse_sat, :gravite_sat, :periode_orbitale_sat, :inclinaison_orbitale_sat, :journee_sat, :etymologie_sat, :description_sat, :picture_sat)");   
 
@@ -69,26 +83,37 @@ if (isset($_GET))
 
                         if($key=='position_astre' || $key=='planet_id')
                             $insertion_sat->bindValue(":$key", $value, PDO::PARAM_INT);
-
                         else 
-                        {
                             $insertion_sat->bindValue(":$key", $value, PDO::PARAM_STR);
-                        }
                     }
+
+                    if(isset($_FILES['picture_sat']))
+                    {
+                        $nomPictureSat=mb_strtolower($_POST['nom_sat']);
+                        $extentionSat=substr(stristr($_FILES['picture_sat']['type'], "/"),1);
+                        $pictureSatBDD=URL."pictures/$nomPictureSat.".$extentionSat;
+                        $pictureSatRepo = RACINE_SITE . "pictures/$nomPictureSat.$extentionSat";
+                        copy($_FILES['picture_sat']['tmp_name'], $pictureSatRepo);
+                        $insertion_sat->bindValue(":picture_sat", $pictureSatBDD, PDO::PARAM_STR);
+                    }
+
                     $insertion_sat->execute();
                 }
+                header('location: '.URL.'insert.php');
                 break;
             }
 
             case 'updatePlanet':
             {          
                 $selectPlanetForm='';
+                $selectUP='selected';
                 break;
             }
 
             case 'updateSat':
             {
                 $selectSatForm='';
+                $selectUS='selected';
                 break;
             }
         }
@@ -113,8 +138,7 @@ if (isset($_GET))
         {
             //Requete Update
             $upPlanet=$systemeSolaire->prepare("UPDATE planet SET nom = :nom, distance_soleil = :distance_soleil, position_soleil = :position_soleil, rayon = :rayon, masse = :masse, gravite = :gravite, periode_orbitale = :periode_orbitale, inclinaison_ecliptique = :inclinaison_ecliptique, journee = :journee, inclinaison_axe = :inclinaison_axe, nombre_satellite = :nombre_satellite, etymologie = :etymologie, description = :description, picture = :picture WHERE id_planet = :id_planet");
-            // debug($_FILES);           
-            // debug($_POST);
+
             foreach($_POST as $key=>$value)
             {
                 $_POST[$key]=htmlspecialchars(strip_tags(addslashes($value)));
@@ -130,10 +154,8 @@ if (isset($_GET))
             {                       
                 $nomPicture=mb_strtolower($_POST['nom']);
                 $extention=substr(stristr($_FILES['picture']['type'], "/"),1);
-                debug($extention);
                 $pictureBDD=URL."pictures/$nomPicture.".$extention;
                 $pictureRepo = RACINE_SITE . "pictures/$nomPicture.$extention";
-                debug($pictureRepo);
                 copy($_FILES['picture']['tmp_name'], $pictureRepo);
             }
 
@@ -141,6 +163,7 @@ if (isset($_GET))
             
             $upPlanet->execute();              
         }
+        header('location: '.URL.'insert.php');
     }
 
     //Sat Update
@@ -154,6 +177,7 @@ if (isset($_GET))
         $hidden_planet='none';
         $hidden_satelitte='';
         $selectUS='selected';
+        $pictureSatBDD=(!empty($satValues['picture_sat'])) ? $satValues['picture_sat'] : '' ;
 
         if(isset($_POST['planet_id'], $_POST['nom_sat'], $_POST['distance_astre'], $_POST['position_astre'], $_POST['rayon_sat'], $_POST['masse_sat'], $_POST['gravite_sat'], $_POST['periode_orbitale_sat'], $_POST['inclinaison_orbitale_sat'], $_POST['journee_sat'], $_POST['etymologie_sat'], $_POST['description_sat'] ))
         {
@@ -169,9 +193,21 @@ if (isset($_GET))
                 else
                 $upSatellite->bindValue(":$key", $value, PDO::PARAM_STR);
             }
+            if($_FILES)
+            {                       
+                $nomPictureSat=mb_strtolower($_POST['nom_sat']);
+                $extentionSat=substr(stristr($_FILES['picture_sat']['type'], "/"),1);
+                $pictureSatBDD=URL."pictures/$nomPictureSat.".$extentionSat;
+                $pictureSatRepo = RACINE_SITE . "pictures/$nomPictureSat.$extentionSat";
+                copy($_FILES['picture_sat']['tmp_name'], $pictureSatRepo);
+            }
+
+            $upSatellite->bindValue(":picture_sat", $pictureSatBDD, PDO::PARAM_STR);
+
             $upSatellite->bindValue(":id_satelitte", $_GET['sat'], PDO::PARAM_INT);
             $upSatellite->execute();
         }
+        header('location: '.URL.'insert.php');
     }
 
 }
@@ -301,7 +337,7 @@ if (isset($_GET))
 
 <!-- ###################################################### FORMULAIRE SATELITTE ###################################################### -->
 <div class="formulaire satelitte" style="display:<?=$hidden_satelitte?>">
-    <form action="" method="post" class="form_sat" enctype="multipart/form-data">
+    <form enctype="multipart/form-data" action="" method="post" class="form_sat" >
         <div id="selecteurP">
             <label for="planet_id">Astre mère</label>
             <select name="planet_id" id="planet_id">
@@ -311,12 +347,10 @@ if (isset($_GET))
                 <?php endwhile;?>
             </select>
         </div>
-
         <div class="input">
             <label for="nom_sat">Nom du satelitte</label>
             <input type="text" name="nom_sat" id="nom_sat" value="<?= isset($_GET['sat']) ? $satValues['nom_sat'] : '';?>">
         </div>
-
         <div class="input">
             <label for="distance_astre">Distance à l'astre mère </label>
             <input type="text" name="distance_astre" id="distance_astre" value="<?= isset($_GET['sat']) ? $satValues['distance_astre'] : '';?>">

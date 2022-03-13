@@ -61,6 +61,7 @@ body
     background:black;
     margin: 0 auto;
     border: none; 
+    max-height: 100vh;
 }
 #index_main
 {
@@ -81,9 +82,9 @@ footer {
 header
 {
     width:100%;
-    background: url('pictures/solar-system-.gif') no-repeat center/100%;
+    background: url('pictures/solar-system.gif') no-repeat center/100%;
     margin: 0 auto;
-    height: 33vh;  
+    height: 28vh;  
     display: flex;
     align-items:flex-end;
     justify-content: center;
@@ -162,7 +163,8 @@ nav li a:hover {
 }
 #image_index img
 {
-    width: 100%;
+    max-width: 960px;
+    width: 100vw;
 }
 /* END INDEX */
 
